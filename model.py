@@ -8,7 +8,7 @@ import numpy as np
 import unicodedata
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
-from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import cross_val_score,train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pickle
 
@@ -125,6 +125,7 @@ def main():
     corpus=SqliteDBReader(path).score_artist_album_reviews()
     y=preprocessor(corpus).get_scores()
     X=preprocessor(corpus).get_reviews()
+    X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.3,random_state=22)
 
     pipeline= Pipeline([
         ("Normalize",TextNormalizer()),
@@ -132,8 +133,11 @@ def main():
         ("Model",MultinomialNB())
         ])
 
-    score=cross_val_score(pipeline,X,y,cv=12)
-    print(score)
+    
+    pipeline.fit(X_train,y_train)
+
+    #score=cross_val_score(pipeline,X,y,cv=12)
+    # #print(score)
     with open("MultinomialNB_model.pkl","wb") as file:
         pickle.dump(pipeline,file)
     

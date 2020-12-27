@@ -1,7 +1,7 @@
 from flask import Flask,render_template,request
 import pickle
 import numpy as np
-from model import TextNormalizer
+from model import TextNormalizer,preprocessor
 
 
 
@@ -17,9 +17,9 @@ def Home():
 def predict():
     if request.method== "POST":
         text = str(request.form["user_input"])
-        text_tokenized=preprocessor(_).tokenize(text)
+        text_tokenized=preprocessor("").tokenize(text)
 
-        prediction = model.predict([[text_tokenized]])
+        prediction = model.predict([text_tokenized])
         if prediction == 1:
             output = "bad"
         elif prediction == 2:
