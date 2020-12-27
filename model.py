@@ -10,6 +10,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import cross_val_score
 from sklearn.feature_extraction.text import TfidfVectorizer
+import pickle
 
 
 
@@ -43,13 +44,13 @@ class preprocessor(object):
     """
     def __init__(self,corpus):
         """
-        the corpus is the SqliteDBReader to preprocess
+        the corpus is the extracted from the sqliteDB file using SqliteDBReader
         """
         self.corpus=corpus 
         
     def tokenize(self, text):
         """
-        segment a text into sentences, tokenize and tag the words in the corpus. Returns a list of sentences , which are lists
+        Segment a text into sentences, tokenize and tag the words in the corpus. Returns a list of sentences , which are lists
         tagged words
         """
         return [ 
@@ -120,7 +121,7 @@ class TextNormalizer(BaseEstimator,TransformerMixin):
 
 
 def main():
-    path=".\database.sqlite"
+    path="./database.sqlite"
     corpus=SqliteDBReader(path).score_artist_album_reviews()
     y=preprocessor(corpus).get_scores()
     X=preprocessor(corpus).get_reviews()
@@ -133,6 +134,9 @@ def main():
 
     score=cross_val_score(pipeline,X,y,cv=12)
     print(score)
+    with open("MultinomialNB_model.pkl","wb") as file:
+        pickle.dump(pipeline,file)
+    
 
 
 if __name__ == "__main__":
