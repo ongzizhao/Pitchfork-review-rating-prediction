@@ -1,6 +1,6 @@
 FROM python:3.7
-COPY . /app
+COPY . /
 EXPOSE 5000
-WORKDIR WORKDIR /app
+WORKDIR WORKDIR /
 RUN pip install -r requirements.txt
 CMD python app.py
