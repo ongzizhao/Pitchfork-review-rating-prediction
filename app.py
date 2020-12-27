@@ -17,8 +17,9 @@ def Home():
 def predict():
     if request.method== "POST":
         text = str(request.form["user_input"])
+        text_tokenized=preprocessor(_).tokenize(text)
 
-        prediction = model.predict([[text]])
+        prediction = model.predict([[text_tokenized]])
         if prediction == 1:
             output = "bad"
         elif prediction == 2:
