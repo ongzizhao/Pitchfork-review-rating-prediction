@@ -7,7 +7,7 @@ from model import TextNormalizer
 
 
 app = Flask(__name__)
-model = pickle.load(open("MultinomialNB_model.pkl","rb"))
+model = pickle.load(open("MultinomialNB_model2.pkl","rb"))
 
 @app.route("/",methods=["GET"])
 def Home():
